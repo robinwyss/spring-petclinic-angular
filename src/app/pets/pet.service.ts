@@ -24,9 +24,11 @@ import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {Observable} from 'rxjs';
 import {Pet} from './pet';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {HandleError, HttpErrorHandler} from '../error.service';
+
+declare var dT_;
 
 @Injectable()
 export class PetService {
@@ -36,6 +38,9 @@ export class PetService {
   private readonly handlerError: HandleError;
 
   constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
+    if(typeof dT_!='undefined' && dT_.initAngularNg){
+      dT_.initAngularNg(http, HttpHeaders);
+	  }
     this.handlerError = httpErrorHandler.createHandleError('OwnerService');
   }
 

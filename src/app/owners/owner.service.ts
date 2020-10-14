@@ -24,10 +24,11 @@ import {Injectable} from '@angular/core';
 import {Owner} from './owner';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {HandleError, HttpErrorHandler} from '../error.service';
 
+declare var dT_;
 
 @Injectable()
 export class OwnerService {
@@ -37,6 +38,9 @@ export class OwnerService {
   private readonly handlerError: HandleError;
 
   constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
+    if(typeof dT_!='undefined' && dT_.initAngularNg){
+      dT_.initAngularNg(http, HttpHeaders);
+	  }
     this.handlerError = httpErrorHandler.createHandleError('OwnerService');
   }
 

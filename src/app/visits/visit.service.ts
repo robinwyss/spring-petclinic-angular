@@ -25,8 +25,10 @@ import {Observable} from 'rxjs';
 import {Visit} from './visit';
 import {environment} from '../../environments/environment';
 import {HandleError, HttpErrorHandler} from '../error.service';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/internal/operators';
+
+declare var dT_;
 
 @Injectable()
 export class VisitService {
@@ -36,6 +38,9 @@ export class VisitService {
   private readonly handlerError: HandleError;
 
   constructor(private http: HttpClient, private httpErrorHandler: HttpErrorHandler) {
+    if(typeof dT_!='undefined' && dT_.initAngularNg){
+      dT_.initAngularNg(http, HttpHeaders);
+	  }
     this.handlerError = httpErrorHandler.createHandleError('OwnerService');
   }
 
